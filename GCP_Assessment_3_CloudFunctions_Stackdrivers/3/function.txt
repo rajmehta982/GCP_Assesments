@@ -1,34 +1,35 @@
+Cloud function main.py code
 import base64
 from gcloud import storage
 import os
 import json
- 
+
 def hello_pubsub(event, context):
     pubsub_message = base64.b64decode(event['data']).decode('utf-8')
     print(type(pubsub_message))
     print(pubsub_message)
-   
-   
+    
+    
     list1 = pubsub_message.split(" ")
     print(list1)
-   
+    
     text = {
     "name":list1[0],
-    "content":
+    "content": 
 {
-"source":list1[1],
+"source":list1[1], 
 "destination":list1[2]
 }
     }
- 
+
     print(text)
     filename = "/tmp/"+str(list1[0])+".json"
-   
+    
     with open(filename, "w") as write_file:
-                json.dump(text, write_file)
- 
+    	json.dump(text, write_file)
+
     client = storage.Client(project='Training')
-    bucket = client.get_bucket('raj-bucket')
+    bucket = client.get_bucket('raj-mehta--bucket')
     blob = bucket.blob('test_file.json')
     blob.upload_from_filename(filename)
     print("Done")
